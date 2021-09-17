@@ -13,7 +13,7 @@ def matrix():
     start_time = time.time()
 
     # Reads in data from file and stores data in input matrix
-    input_matrix = pd.read_csv('G - V.csv', sep=',', header=0)
+    input_matrix = pd.read_csv('../data/G - V.csv', sep=',', header=0)
 
     # Empty list for weighted
     weighted_sums = []
@@ -25,6 +25,14 @@ def matrix():
         for j in range(29):
             new.append(0)
         output_matrix.append(new)
+
+    # Matrix for storing final numbers used in Table 4 is initialized
+    final_results = []
+    for i in range(29):
+        new = []
+        for j in range(5):
+            new.append(0)
+        final_results.append(new)
 
     # Nested For loops are used to make every possible combination
     # 0 - 4  = [0, 0, 0, 0, 0, 0, 0, 0] ~ [4, 4, 4, 4, 4, 4, 4, 4]
@@ -40,10 +48,10 @@ def matrix():
                                     # Each alternative is selected from the original value input matrix
                                     for alternative in input_matrix.iterrows():
                                         # The weighted sum is calculated for each alternative
-                                        weighted_sums.append(alternative[0] * i1 + alternative[1] * i2 +
-                                                             alternative[2] * i3 + alternative[3] * i4 +
-                                                             alternative[4] * i5 + alternative[5] * i6 +
-                                                             alternative[6] * i7 + alternative[7] * i8)
+                                        weighted_sums.append(alternative[1][0] * i1 + alternative[1][1] * i2 +
+                                                             alternative[1][2] * i3 + alternative[1][3] * i4 +
+                                                             alternative[1][4] * i5 + alternative[1][5] * i6 +
+                                                             alternative[1][6] * i7 + alternative[1][7] * i8)
                                     # For every place winner
                                     for i in range(29):
 
@@ -61,12 +69,28 @@ def matrix():
                                     weighted_sums.clear()
 
     # The entire output matrix is printed
+    print("-------------- Entire Matrix ---------------")
+    print("--------------------------------------------")
     printList(output_matrix)
+    print("--------------------------------------------")
+    print("--------------------------------------------")
+    print()
+    print()
+
+    print("-------------- First 5 Places --------------")
+    print("--------------------------------------------")
+    for i in range(5):
+        index = 0
+        for place in output_matrix[i]:
+            final_results[index][i] = (round((place / 390624) * 100, 1))
+            index += 1
+    printList(final_results)
+    print("--------------------------------------------")
+    print("--------------------------------------------")
 
     # The total time elapsed is calculated and printed out
     print("My program took " + str(time.time() - start_time) + " to run")
 
 
 if __name__ == '__main__':
-    print("hello world")
     matrix()
